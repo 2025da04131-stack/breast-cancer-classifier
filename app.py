@@ -77,8 +77,12 @@ model_bundle = load_model(MODEL_FILES[model_choice])
 model = model_bundle["model"]
 needs_scaling = model_bundle["needs_scaling"]
 
+# Always load the scaler — it's needed here if the selected model uses it,
+# and also later in Section 5 when comparing against OTHER models that may
+# need scaling even if the currently selected model doesn't.
+scaler = load_scaler()
+
 if needs_scaling:
-    scaler = load_scaler()
     X_input = scaler.transform(X_test)
 else:
     X_input = X_test.values
